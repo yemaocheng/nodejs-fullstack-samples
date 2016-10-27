@@ -34,7 +34,7 @@ app.MessageView = Backbone.View.extend({
       });
   },
   render:function(){
-       var tem = this.model.get('main').temp;
+       var temp = this.model.get('main').temp;
        var celsius = parseInt(temp - 273.15);
         this.model.set('celsius', celsius);
 
@@ -48,8 +48,9 @@ app.MessageView = Backbone.View.extend({
 
   });
 
- new app.MessageView();
-
+$(document).ready(function(){
+    app.view = new app.MessageView();
+});
 
 
 })();
