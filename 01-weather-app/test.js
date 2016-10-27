@@ -43,7 +43,7 @@ app.MessageView = Backbone.View.extend({
 
         var html = this.template(this.model.attributes);
        
-       $('#app').html(html);
+      this.$el.html(html);
   }
 
   });
