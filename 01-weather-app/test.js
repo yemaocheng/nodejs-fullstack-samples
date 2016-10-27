@@ -20,33 +20,36 @@ app.Message = Backbone.Model.extend({
   }
 });
 
-var message = new app.Message();
+app.MessageView = Backbone.View.extend({
+  el:'#app',
+  initialize:function(){
+      var self = this;
+      this.model = new app.Message();
+      this.template = _.template($("#weather-tmpl").html());
 
-$(document).ready(function(){
-  var render = function(){
-    // Celsius
-        var temp = message.get('main').temp;
-        var celsius = parseInt(temp - 273.15);
-        message.set('celsius', celsius);
+      this.model.fetch({
+          success:function(model,resp,options){
+            self.render();
+          }
+      });
+  },
+  render:function(){
+       var tem = this.model.get('main').temp;
+       var celsius = parseInt(temp - 273.15);
+        this.model.set('celsius', celsius);
 
-
-        // Date
         var date = moment().format('LL');
-        message.set('date', date);
-        
-        var html = template(message.attributes);
+        this.model.set('date', date);
+
+        var html = this.template(this.model.attributes);
        
        $('#app').html(html);
-
-};
-var template = _.template($("#weather-tmpl").html());
-
-message.fetch({
-  success:function(model, resp, options){
-    console.log(resp);
-    render();
   }
-});
 
-});
+  });
+
+ new app.MessageView();
+
+
+
 })();
