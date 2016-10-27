@@ -8,18 +8,16 @@ var app = app || {};
 * MODELS
 **/
 app.Message = Backbone.Model.extend({
-    url: function() {
-         return 'http://phone-karate.codio.io:3000/start';
-    },
+
     defaults: {
-        data: []
+       temp : 0
     }
 });
 
 app.SubmitMessage = Backbone.Model.extend({
     // data source
     url: function() {
-        return 'http://phone-karate.codio.io:3000/send/' + this.get('message');
+        return 'http://localhost:3000/oject/timestamp/send?message=' + this.get('message');
     },
     defaults: {
         message: ''
@@ -41,7 +39,7 @@ app.MessageView = Backbone.View.extend({
         //this.render();
         this.createWebSocket();
         
-        this.model.fetch();
+        //this.model.fetch();
     },
     // Backbone delegation
     render: function() {
@@ -60,13 +58,13 @@ app.MessageView = Backbone.View.extend({
         function onWsMessage(message) {
            var json = JSON.parse(message.data);
 
-           if (json.type === 'message') {
-            self.model.set('data', json.data);      // model state is changed
+           if (message.type === 'message') {
+            self.model.set('temp', json.temp);      // model state is changed
            }
         }
         
          // Let us open a web socket
-         ws = new WebSocket("ws://phone-karate.codio.io:3000/start", ['echo-protocol']);
+         ws = new WebSocket("ws://wot.city/object/testman/viewer");
          ws.onopen = function()
          {
              div.append("<h2>Done</h2>");
